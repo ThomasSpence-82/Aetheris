@@ -1,0 +1,18 @@
+﻿<!--
+    Copyright (c) Arash Khatami
+    Distributed under the MIT license. See the LICENSE file in the project root for more information.
+-->
+<Window x:Class="AetherEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AetherEditor"
+        xmlns:editors="clr-namespace:AetherEditor.Editors"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="Aetheris Editor" Height="768" Width="1366"
+        Style="{StaticResource AetherisWindowStyle}">
+    <Grid>
+        <editors:WorldEditorView />
+    </Grid>
+</Window>

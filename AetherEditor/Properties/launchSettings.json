@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "AetherEditor": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
