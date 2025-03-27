@@ -3,7 +3,7 @@
 #pragma once
 #include "CommonHeaders.h"
 
-namespace Aetheris::id {
+namespace aetheris::id {
 
 using id_type = u32;
 

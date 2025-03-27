@@ -3,7 +3,7 @@
 #pragma once
 #include "CommonHeaders.h"
 
-namespace Aetheris::math {
+namespace aetheris::math {
 
 constexpr float pi = 3.1415926535897932384626433832795f;
 constexpr float epsilon = 0e-5f;
