@@ -24,4 +24,16 @@
     <Page Remove="ProjectTemplates\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Assets\Icons\position.png" />
+    <None Remove="Assets\Icons\rotation.png" />
+    <None Remove="Assets\Icons\scale.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Icons\position.png" />
+    <Resource Include="Assets\Icons\rotation.png" />
+    <Resource Include="Assets\Icons\scale.png" />
+  </ItemGroup>
+
 </Project>
