@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Arash Khatami
 // Distributed under the MIT license. See the LICENSE file in the project root for more information.
 using AetherEditor.GameProject;
+using AetherEditor.GameDev;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -32,6 +33,11 @@ namespace AetherEditor.Editors
         {
             Loaded -= OnWorldEditorViewLoaded;
             Focus();
+        }
+
+        private void OnNewScript_Button_Click(object sender, RoutedEventArgs e)
+        {
+            new NewScriptDialog().ShowDialog();
         }
     }
 }
