@@ -1,21 +1,14 @@
-﻿using AetherEditor.Utilities;
-using AetherEditor.GameProject;
+﻿using AetherEditor.GameProject;
+using AetherEditor.Utilities;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Packaging;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
 
 namespace AetherEditor.GameDev
 {
@@ -44,11 +37,11 @@ void {0}::update(float dt)
         private static readonly string _hCode = @"#pragma once
 namespace {1} {{
 
-class {0} : public primal::script::entity_script
+class {0} : public aetheris::script::entity_script
 {{
 public:
-    constexpr explicit {0}(primal::game_entity::entity entity)
-        : primal::script::entity_script{{entity}} {{}}
+    constexpr explicit {0}(aetheris::game_entity::entity entity)
+        : aetheris::script::entity_script{{entity}} {{}}
 
     void begin_play() override;
     void update(float dt) override;

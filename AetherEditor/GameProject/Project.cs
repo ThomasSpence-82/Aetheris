@@ -15,10 +15,18 @@ using System.Windows.Input;
 
 namespace AetherEditor.GameProject
 {
+    enum BuildConfiguration
+    {
+        Debug,
+        DebugEditor,
+        Release,
+        ReleaseEditor,
+    }
+
     [DataContract(Name = "Game")]
     class Project : ViewModelBase
     {
-        public static string Extension { get; } = ".Aetheris";
+        public static string Extension { get; } = ".aetheris";
         [DataMember]
         public string Name { get; private set; } = "New Project";
         [DataMember]
@@ -26,6 +34,8 @@ namespace AetherEditor.GameProject
 
         public string FullPath => $@"{Path}{Name}{Extension}";
         public string Solution => $@"{Path}{Name}.sln";
+
+        private static readonly string[] _buildConfigurationNames = new string[] { "Debug", "DebugEditor", "Release", "ReleaseEditor" };
 
         [DataMember(Name = "Scenes")]
         private ObservableCollection<Scene> _scenes = new ObservableCollection<Scene>();
@@ -56,6 +66,27 @@ namespace AetherEditor.GameProject
         public ICommand AddSceneCommand { get; private set; }
         public ICommand RemoveSceneCommand { get; private set; }
         public ICommand SaveCommand { get; private set; }
+        public ICommand BuildCommand { get; private set; }
+
+        private static string GetConfigurationName(BuildConfiguration config) => _buildConfigurationNames[(int)config];
+
+        private int _buildConfig;
+        [DataMember]
+        public int BuildConfig
+        {
+            get => _buildConfig;
+            set
+            {
+                if (_buildConfig != value)
+                {
+                    _buildConfig = value;
+                    OnPropertyChanged(nameof(BuildConfig));
+                }
+            }
+        }
+
+        public BuildConfiguration StandAloneBuildConfig => BuildConfig == 0 ? BuildConfiguration.Debug : BuildConfiguration.Release;
+        public BuildConfiguration DllBuildConfig => BuildConfig == 0 ? BuildConfiguration.DebugEditor : BuildConfiguration.ReleaseEditor;
 
         private void AddScene(string sceneName)
         {
@@ -85,6 +116,35 @@ namespace AetherEditor.GameProject
         {
             Serializer.ToFile(project, project.FullPath);
             Logger.Log(MessageType.Info, $"Project saved to {project.FullPath}");
+        }
+
+        private void BuildGameCodeDll(bool showWindow = true)
+        {
+            try
+            {
+                UnloadGameCodeDll();
+                VisualStudio.BuildSolution(this, GetConfigurationName(DllBuildConfig), showWindow);
+
+                if (VisualStudio.BuildSucceeded)
+                {
+                    LoadGameCodeDll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
+        private void UnloadGameCodeDll()
+        {
+            
+        }
+
+        private void LoadGameCodeDll()
+        {
+
         }
 
         [OnDeserialized]
@@ -120,9 +180,10 @@ namespace AetherEditor.GameProject
                     $"Remove {x.Name}"));
             }, x => !x.IsActive);
 
-            UndoCommand = new RelayCommand<object>(x => UndoRedo.Undo());
-            RedoCommand = new RelayCommand<object>(x => UndoRedo.Redo());
+            UndoCommand = new RelayCommand<object>(x => UndoRedo.Undo(), x => UndoRedo.UndoList.Any());
+            RedoCommand = new RelayCommand<object>(x => UndoRedo.Redo(), x => UndoRedo.RedoList.Any());
             SaveCommand = new RelayCommand<object>(x => Save(this));
+            BuildCommand = new RelayCommand<bool>(x => BuildGameCodeDll(x), x => !VisualStudio.IsDebugging() && VisualStudio.BuildCompleted);
         }
 
         public Project(string name, string path)
